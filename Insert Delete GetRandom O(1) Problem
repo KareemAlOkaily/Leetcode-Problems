@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+
+public class RandomizedSet {
+    private Dictionary<int, int> valToIndex;
+    private List<int> list;
+
+    public RandomizedSet() {
+        valToIndex = new Dictionary<int, int>();
+        list = new List<int>();
+    }
+
+    public bool Insert(int val) {
+        if (valToIndex.ContainsKey(val)) {
+            return false;
+        }
+
+        valToIndex[val] = list.Count;
+        list.Add(val);
+        return true;
+    }
+
+    public bool Remove(int val) {
+        if (!valToIndex.ContainsKey(val)) {
+            return false;
+        }
+
+        int index = valToIndex[val];
+        int lastElement = list[list.Count - 1];
+        list[index] = lastElement;
+        valToIndex[lastElement] = index;
+        list.RemoveAt(list.Count - 1);
+        valToIndex.Remove(val);
+        return true;
+    }
+
+    public int GetRandom() {
+        Random rand = new Random();
+        int index = rand.Next(list.Count);
+        return list[index];
+    }
+}
